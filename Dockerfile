@@ -6,6 +6,7 @@ RUN yarn install
 COPY . .
 RUN yarn build 
 
-FROM nginx
-EXPOSE 80
+FROM nginx:1.15.2-alpine
 COPY --from=builder /app/build /usr/share/nginx/html
+
+EXPOSE 80
