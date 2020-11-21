@@ -1,11 +1,14 @@
-FROM node:alpine as builder
-WORKDIR "/app"
+FROM node:alpine as builder 
 
-COPY package*.json ./
-RUN yarn install 
-COPY . .
-RUN yarn build 
+WORKDIR /app
 
-FROM nginx:1.15.2-alpine
+COPY package.json /app
+
+RUN yarn install && yarn cache clean
+
+COPY . /app 
+ 
+RUN yarn build
+
+FROM nginx
 COPY --from=builder /app/build /usr/share/nginx/html
-EXPOSE 80
